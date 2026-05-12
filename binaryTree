@@ -1,0 +1,115 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct treeNode {
+    char key;
+    struct treeNode* left;
+    struct treeNode* right;
+} treeNode;
+
+void displaylnorder(treeNode* root) {
+    if (root != NULL) {
+        displaylnorder(root->left);
+        printf("%c ", root->key);
+        displaylnorder(root->right);
+    }
+}
+
+treeNode* searchBST(treeNode* root, char key) {
+    if (root == NULL || root->key == key) {
+        return root;
+    }
+
+    if (key < root->key) {
+        return searchBST(root->left, key);
+    }
+    else {
+        return searchBST(root->right, key);
+    }
+}
+
+treeNode* createNode(char key) {
+    treeNode* newNode = (treeNode*)malloc(sizeof(treeNode));
+
+    if (newNode == NULL) {
+        printf("메모리 할당 실패\n");
+        exit(1);
+    }
+
+    newNode->key = key;
+    newNode->left = NULL;
+    newNode->right = NULL;
+
+    return newNode;
+}
+
+treeNode* insertBSTNode(treeNode* root, char key) {
+    if (root == NULL) {
+        return createNode(key);
+    }
+
+    if (key < root->key) {
+        root->left = insertBSTNode(root->left, key);
+    }
+    else if (key > root->key) {
+        root->right = insertBSTNode(root->right, key);
+    }
+
+    return root;
+}
+
+int main() {
+    treeNode* root = NULL;
+    treeNode* found = NULL;
+    int choice = 0;
+    char key = 0;
+
+    while (1) {
+        printf("\n*---------------------*");
+        printf("\n\t1 : 트리 출력");
+        printf("\n\t2 : 문자 삽입");
+        printf("\n\t3 : 문자 검색");
+        printf("\n\t4 : 문자 삭제");
+        printf("\n\t5 : 종료");
+        printf("\n*---------------------*");
+        printf("\n메뉴 입력 : ");
+        scanf_s("%d", &choice);
+
+        switch (choice) {
+        case 1:
+            printf("\t[이진트리 출력] ");
+            displaylnorder(root);
+            printf("\n");
+            break;
+
+        case 2:
+            printf("삽입 문자 입력 : ");
+            scanf_s(" %c", &key, 1);
+            root = insertBSTNode(root, key);
+            break;
+
+        case 3:
+            printf("찾을 문자 입력 : ");
+            scanf_s(" %c", &key, 1);
+            found = searchBST(root, key);
+
+            if (found) {
+                printf("해당 문자를 찾았습니다.\n");
+            }
+            else {
+                printf("해당 문자가 없습니다.\n");
+            }
+            break;
+
+        case 4:
+            break;
+
+        case 5:
+            return 0;
+
+        default:
+            printf("없는 메뉴\n");
+            break;
+        }
+    }
+}
