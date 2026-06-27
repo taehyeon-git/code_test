@@ -1,1 +1,1 @@
-to log solving BaekJoon problems
+solving BaekJoon problems
